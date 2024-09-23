@@ -1,7 +1,7 @@
 plugins {
-    alias(libs.plugins.android.application)
-    alias(libs.plugins.kotlin.android)
-    kotlin("kapt")
+    id("com.android.application")
+    id("org.jetbrains.kotlin.android")
+    id("kotlin-kapt")
 }
 
 android {
@@ -9,9 +9,7 @@ android {
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.rishi.newsapp2"
         minSdk = 24
-        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 
@@ -53,6 +51,16 @@ dependencies {
     // dagger
     implementation(libs.dagger)
     kapt(libs.dagger.compiler)
+    implementation ("androidx.recyclerview:recyclerview:1.2.1")
+    implementation ("com.github.bumptech.glide:glide:4.11.0")
+    implementation ("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation ("android.arch.lifecycle:extensions:1.1.1")
+    implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1")
+    implementation ("androidx.lifecycle:lifecycle-runtime-ktx:2.5.1")
+    implementation ("com.google.dagger:dagger:2.42")
+    kapt ("com.google.dagger:dagger-compiler:2.42")
+    implementation ("androidx.browser:browser:1.4.0")
 
     implementation(libs.androidx.recyclerview)
     implementation(libs.glide)
