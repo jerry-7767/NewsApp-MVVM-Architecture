@@ -1,16 +1,24 @@
 package com.rishi.newsapp.di.module
 
-import com.rishi.newsapp.MainviewModel
-import com.rishi.newsapp.di.ActivityScope
+import android.content.Context
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
+import com.rishi.newsapp.data.repository.TopheadlineRepository
+import com.rishi.newsapp.di.ActivityContext
+import com.rishi.newsapp.ui.HomePage.HomeViewModel
+import com.rishi.newsapp.ui.HomePage.NewsAdapter
+import com.rishi.newsapp.ui.HomePage.NewsViewpagerAdapter
+import com.rishi.newsapp.ui.base.ViewmodelproviderFactory
 import dagger.Module
 import dagger.Provides
 
 @Module
-class ActivityModule {
+class ActivityModule(private val activity: AppCompatActivity) {
 
-    @ActivityScope
+    @ActivityContext
     @Provides
-    fun provideMainViewModel(): MainviewModel{
-        return MainviewModel()
+    fun provideContext(): Context {
+        return activity
     }
+
 }

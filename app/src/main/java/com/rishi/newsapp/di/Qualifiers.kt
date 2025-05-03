@@ -19,5 +19,13 @@ annotation class DatabaseName
 annotation class DatabaseVersion
 
 @Qualifier
+@Retention(AnnotationRetention.SOURCE)
+annotation class FragmentContext
+
+@Qualifier
 @Retention(AnnotationRetention.BINARY)
-annotation class NetworkAPIKey
+annotation class NetworkApiKey
+
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
+annotation class BaseUrl

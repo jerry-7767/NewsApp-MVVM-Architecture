@@ -1,12 +1,12 @@
 package com.rishi.newsapp.di.component
 
-import com.rishi.newsapp.MainActivity
 import com.rishi.newsapp.di.ActivityScope
 import com.rishi.newsapp.di.module.ActivityModule
+import com.rishi.newsapp.ui.HomeActivity
 import dagger.Component
 
 @ActivityScope
-@Component(modules = [ActivityModule::class])
+@Component(dependencies = [ApplicationComponent::class], modules = [ActivityModule::class])
 interface ActivityComponent {
-    fun inject(mainActivity: MainActivity)
+    fun inject(mainActivity: HomeActivity)
 }
