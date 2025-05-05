@@ -4,18 +4,21 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.rishi.newsapp.MVVMApplication
 import com.rishi.newsapp.R
+import com.rishi.newsapp.data.model.Country
 import com.rishi.newsapp.databinding.FragmentCountryBinding
 import com.rishi.newsapp.databinding.FragmentHomeBinding
-import com.rishi.newsapp.di.component.DaggerCountryFragmentComponent
-import com.rishi.newsapp.di.module.CountryFragmentModule
 import com.rishi.newsapp.ui.HomeActivity
+import com.rishi.newsapp.ui.HomePage.HomeFragment
 import com.rishi.newsapp.utils.Constants
+import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
+@AndroidEntryPoint
 class CountryFragment : Fragment() {
 
     private lateinit var binding: FragmentCountryBinding
@@ -32,14 +35,7 @@ class CountryFragment : Fragment() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        injectdependencies()
         super.onCreate(savedInstanceState)
-    }
-
-    private fun injectdependencies() {
-        DaggerCountryFragmentComponent.builder().countryFragmentModule(CountryFragmentModule(this))
-            .applicationComponent((requireContext().applicationContext as MVVMApplication).applicationComponent)
-            .build().inject(this)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -54,6 +50,23 @@ class CountryFragment : Fragment() {
         countryAdapter.addData(Constants.COUNTRY_LIST)
         countryAdapter.notifyDataSetChanged()
 
+        countryAdapter.itemClickListener = { pos, countryList ->
+            val article = countryList as Country
+            val bundle = Bundle().apply {
+                putString("country_id", article.id)
+                putString("country_name", article.name)
+                putInt("pos", pos)
+            }
+
+            val fragment = HomeFragment().apply {
+                arguments = bundle
+            }
+
+            requireActivity().supportFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container_view, fragment)
+                .addToBackStack(null)
+                .commit()
+        }
 
     }
 

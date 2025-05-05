@@ -7,7 +7,7 @@ import com.rishi.newsapp.utils.Constants
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
-import me.amitshekhar.newsapp.data.model.SourcesList
+import com.rishi.newsapp.data.model.SourcesList
 import javax.inject.Inject
 
 class TopheadlineRepository @Inject constructor(private val networkservice: Networkservice) {

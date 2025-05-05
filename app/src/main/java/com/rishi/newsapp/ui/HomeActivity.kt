@@ -1,30 +1,26 @@
 package com.rishi.newsapp.ui
 
-import android.app.ProgressDialog
 import android.os.Bundle
 import android.os.Handler
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import com.rishi.newsapp.MVVMApplication
 import com.rishi.newsapp.R
 import com.rishi.newsapp.databinding.ActivityHomeBinding
-import com.rishi.newsapp.di.component.DaggerActivityComponent
-import com.rishi.newsapp.di.module.ActivityModule
 import com.rishi.newsapp.ui.CountryPage.CountryFragment
 import com.rishi.newsapp.ui.HomePage.HomeFragment
 import com.rishi.newsapp.ui.LanguagePage.LanguageFragment
 import com.rishi.newsapp.ui.SearchPage.SearchFragment
 import com.rishi.newsapp.ui.SourcePage.SourceFragment
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class HomeActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityHomeBinding
     private var doubleBackToExitPressedOnce = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        injectDependencies()
         super.onCreate(savedInstanceState)
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -107,6 +103,7 @@ class HomeActivity : AppCompatActivity() {
             super.onBackPressed()
         }
     }
+
     private fun displayView() {
         var fragment: Fragment? = null
         when (0) {
@@ -120,9 +117,4 @@ class HomeActivity : AppCompatActivity() {
         }
     }
 
-    private fun injectDependencies() {
-         DaggerActivityComponent.builder()
-             .applicationComponent((application as MVVMApplication).applicationComponent)
-             .activityModule(ActivityModule(this)).build().inject(this)
-     }
 }

@@ -5,10 +5,9 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.Recycler
 import com.bumptech.glide.Glide
 import com.rishi.newsapp.databinding.NewsSingleItemBinding
-import me.amitshekhar.newsapp.data.model.Article
+import com.rishi.newsapp.data.model.Article
 
 class NewsAdapter(
     private val articleList: ArrayList<Article>

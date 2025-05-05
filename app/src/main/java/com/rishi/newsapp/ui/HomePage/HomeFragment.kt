@@ -1,41 +1,35 @@
 package com.rishi.newsapp.ui.HomePage
 
 import android.app.ProgressDialog
-import android.graphics.Color
 import android.os.Bundle
 import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.rishi.newsapp.MVVMApplication
 import com.rishi.newsapp.R
 import com.rishi.newsapp.data.model.Country
-import com.rishi.newsapp.databinding.ActivityHomeBinding
 import com.rishi.newsapp.databinding.FragmentHomeBinding
-import com.rishi.newsapp.di.component.DaggerHomeFragmentComponent
-import com.rishi.newsapp.di.module.ActivityModule
-import com.rishi.newsapp.di.module.HomeFragmentModule
 import com.rishi.newsapp.ui.HomeActivity
 import com.rishi.newsapp.ui.SourcePage.SourceFragment
 import com.rishi.newsapp.ui.base.UiState
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-import me.amitshekhar.newsapp.data.model.Article
+import com.rishi.newsapp.data.model.Article
 import java.util.Objects
 import javax.inject.Inject
 
+@AndroidEntryPoint
 class HomeFragment : Fragment() {
 
-    @Inject
     lateinit var mainviewModel: HomeViewModel
 
     private lateinit var binding: FragmentHomeBinding
@@ -81,7 +75,6 @@ class HomeFragment : Fragment() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        injectDependencies()
         super.onCreate(savedInstanceState)
     }
 
@@ -92,17 +85,21 @@ class HomeFragment : Fragment() {
         countrylist = ArrayList()
         countrylist_name = ArrayList()
 
-        setupObserver()
+        setupViewModel()
         setupUI()
-        if (strLanguage.isNotEmpty()&& !strLanguage.equals("null")) {
+        setupObserver()
+        if (strLanguage.isNotEmpty() && !strLanguage.equals("null")) {
             mainviewModel.fetchNewsbyLanguage(strLanguage)
         }
         if (strSourceID.isNotEmpty() && !strSourceID.equals("null")) {
             mainviewModel.fetchNewsbySources(strSourceID)
         }
-        if (strCountry_id.isNotEmpty()&& !strCountry_id.equals("null")) {
+        if (strCountry_id.isNotEmpty() && !strCountry_id.equals("null")) {
             mainviewModel.fetchNewsbyCountry(strCountry_id)
         }
+    }
+    private fun setupViewModel() {
+        mainviewModel = ViewModelProvider(this)[HomeViewModel::class.java]
     }
 
     private fun setupUI() {
@@ -139,7 +136,7 @@ class HomeFragment : Fragment() {
         binding.llMore.setOnClickListener {
             val activity = context as AppCompatActivity
             activity.supportFragmentManager.beginTransaction()
-                .replace(R.id.fragment_container_view,SourceFragment())
+                .replace(R.id.fragment_container_view, SourceFragment())
                 .addToBackStack(null)
                 .commit()
         }
@@ -307,15 +304,6 @@ class HomeFragment : Fragment() {
 
         newsAdapter.addData(articles)
         newsAdapter.notifyDataSetChanged()
-    }
-
-    private fun injectDependencies() {
-        DaggerHomeFragmentComponent
-            .builder()
-            .homeFragmentModule(HomeFragmentModule(this))
-            .applicationComponent((requireContext().applicationContext as MVVMApplication).applicationComponent)
-            .build()
-            .inject(this)
     }
 
     private fun showProgressDialog() {

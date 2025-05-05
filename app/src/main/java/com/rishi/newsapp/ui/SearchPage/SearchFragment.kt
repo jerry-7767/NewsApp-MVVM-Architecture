@@ -2,7 +2,6 @@ package com.rishi.newsapp.ui.SearchPage
 
 import android.app.ProgressDialog
 import android.os.Bundle
-import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,23 +9,23 @@ import android.view.Window
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.rishi.newsapp.MVVMApplication
 import com.rishi.newsapp.R
 import com.rishi.newsapp.databinding.FragmentSearchBinding
-import com.rishi.newsapp.di.component.DaggerSearchFragmentComponent
-import com.rishi.newsapp.di.module.SearchFragmentModule
 import com.rishi.newsapp.ui.HomeActivity
-import com.rishi.newsapp.ui.HomePage.HomeViewModel
 import com.rishi.newsapp.ui.HomePage.NewsAdapter
+import com.rishi.newsapp.ui.SourcePage.SourceViewModel
 import com.rishi.newsapp.ui.base.UiState
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import java.util.Objects
 import javax.inject.Inject
 
+@AndroidEntryPoint
 class SearchFragment : Fragment() {
 
     private lateinit var binding: FragmentSearchBinding
@@ -35,7 +34,6 @@ class SearchFragment : Fragment() {
     @Inject
     lateinit var newsAdapter: NewsAdapter
 
-    @Inject
     lateinit var searchViewModel: SearchViewModel
 
     private var progressDialog: ProgressDialog? = null
@@ -50,24 +48,21 @@ class SearchFragment : Fragment() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        injectd()
         super.onCreate(savedInstanceState)
-    }
-
-    private fun injectd() {
-        DaggerSearchFragmentComponent.builder().searchFragmentModule(SearchFragmentModule(this))
-            .applicationComponent((requireContext().applicationContext as MVVMApplication).applicationComponent)
-            .build().inject(this)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         progressDialog = ProgressDialog(requireContext())
         progressDialog!!.setCancelable(false)
+        setupViewModel()
         setupObserver()
         setupUI()
     }
 
+    private fun setupViewModel() {
+        searchViewModel = ViewModelProvider(this)[SearchViewModel::class.java]
+    }
     private fun setupUI() {
         val recyclerView = binding.recyclerSearch
         recyclerView.layoutManager = LinearLayoutManager(requireContext())

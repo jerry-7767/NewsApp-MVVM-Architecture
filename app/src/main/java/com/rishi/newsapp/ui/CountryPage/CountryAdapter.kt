@@ -1,40 +1,25 @@
 package com.rishi.newsapp.ui.CountryPage
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
-import com.rishi.newsapp.R
 import com.rishi.newsapp.data.model.Country
 import com.rishi.newsapp.databinding.RecyclerItemListBinding
-import com.rishi.newsapp.ui.HomePage.HomeFragment
+import com.rishi.newsapp.utils.ItemClickListener
 
-class CountryAdapter(
-    private val articleList: ArrayList<Country>,
-    val context: Context
+class CountryAdapter (
+    private val articleList: ArrayList<Country>
 ) : RecyclerView.Adapter<CountryAdapter.NewsViewHolder>() {
+
+    lateinit var itemClickListener: ItemClickListener<Any>
+
     class NewsViewHolder(private val binding: RecyclerItemListBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(article: Country, context: Context) {
+        fun bind(article: Country, itemClickListener: ItemClickListener<Any>) {
             binding.txtDesc.text = article.name
             itemView.setOnClickListener {
-                val bundle = Bundle().apply {
-                    putString("country_id", article.id)
-                    putString("country_name", article.name)
-                    putInt("pos", bindingAdapterPosition)
-                }
-
-                val fragment = HomeFragment().apply {
-                    arguments = bundle
-                }
-
-                val activity = context as AppCompatActivity
-                activity.supportFragmentManager.beginTransaction()
-                    .replace(R.id.fragment_container_view, fragment)
-                    .addToBackStack(null)
-                    .commit()
+                itemClickListener(bindingAdapterPosition,article)
             }
         }
     }
@@ -54,7 +39,7 @@ class CountryAdapter(
     }
 
     override fun onBindViewHolder(holder: NewsViewHolder, position: Int) {
-        holder.bind(articleList[position],context)
+        holder.bind(articleList[position],itemClickListener)
     }
 
     fun addData(list: List<Country>) {

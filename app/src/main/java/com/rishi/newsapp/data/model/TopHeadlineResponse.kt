@@ -1,7 +1,6 @@
 package com.rishi.newsapp.data.model
 
 import com.google.gson.annotations.SerializedName
-import me.amitshekhar.newsapp.data.model.Article
 
 data class TopHeadlineResponse(
     @SerializedName("status")

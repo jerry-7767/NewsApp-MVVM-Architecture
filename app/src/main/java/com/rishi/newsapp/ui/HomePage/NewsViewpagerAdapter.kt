@@ -5,12 +5,9 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.recyclerview.widget.RecyclerView
-import androidx.viewpager.widget.ViewPager
 import com.bumptech.glide.Glide
-import com.rishi.newsapp.R
 import com.rishi.newsapp.databinding.ViewpagerSingleItemBinding
-import me.amitshekhar.newsapp.data.model.Article
-import java.util.*
+import com.rishi.newsapp.data.model.Article
 import kotlin.collections.ArrayList
 
 class NewsViewpagerAdapter(

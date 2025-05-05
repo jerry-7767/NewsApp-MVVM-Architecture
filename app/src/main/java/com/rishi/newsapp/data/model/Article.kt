@@ -1,6 +1,7 @@
-package me.amitshekhar.newsapp.data.model
+package com.rishi.newsapp.data.model
 
 import com.google.gson.annotations.SerializedName
+import com.rishi.newsapp.data.model.Source
 
 data class Article(
     @SerializedName("title")

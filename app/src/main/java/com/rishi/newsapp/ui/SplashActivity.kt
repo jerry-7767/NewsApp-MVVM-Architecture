@@ -3,10 +3,12 @@ package com.rishi.newsapp.ui
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
-import com.rishi.newsapp.BaseActivity
+import androidx.appcompat.app.AppCompatActivity
 import com.rishi.newsapp.R
+import dagger.hilt.android.AndroidEntryPoint
 
-class SplashActivity : BaseActivity() {
+@AndroidEntryPoint
+class SplashActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)

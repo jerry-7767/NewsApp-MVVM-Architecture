@@ -1,10 +1,6 @@
-package com.rishi.newsapp.di
+package com.rishi.newsapp.di.module
 
 import javax.inject.Qualifier
-
-@Qualifier
-@Retention(AnnotationRetention.BINARY)
-annotation class ApplicationContext
 
 @Qualifier
 @Retention(AnnotationRetention.BINARY)

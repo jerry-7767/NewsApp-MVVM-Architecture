@@ -1,16 +1,15 @@
 package com.rishi.newsapp.di.module
 
 import android.content.Context
-import com.rishi.newsapp.MVVMApplication
 import com.rishi.newsapp.data.api.ApiKeyInterceptor
 import com.rishi.newsapp.data.api.CacheInterceptor
 import com.rishi.newsapp.data.api.ForceCacheInterceptor
 import com.rishi.newsapp.data.api.Networkservice
-import com.rishi.newsapp.di.ApplicationContext
-import com.rishi.newsapp.di.BaseUrl
-import com.rishi.newsapp.di.NetworkApiKey
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.hilt.components.SingletonComponent
 import okhttp3.Cache
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -20,13 +19,8 @@ import java.io.File
 import javax.inject.Singleton
 
 @Module
-class ApplicationModule(val application: MVVMApplication) {
-
-    @ApplicationContext
-    @Provides
-    fun provideContext(): Context {
-        return application
-    }
+@InstallIn(SingletonComponent::class)
+class ApplicationModule {
 
     @BaseUrl
     @Provides
@@ -53,18 +47,19 @@ class ApplicationModule(val application: MVVMApplication) {
     @Provides
     @Singleton
     fun provideOkHttpClient(
+        @ApplicationContext appContext: Context,
         apiKeyInterceptor: ApiKeyInterceptor,
         cacheInterceptor: CacheInterceptor,
         forceCacheInterceptor: ForceCacheInterceptor,
         loggerInterceptor: HttpLoggingInterceptor
     ): OkHttpClient = OkHttpClient()
-            .newBuilder()
-            .cache(Cache(File(application.cacheDir, "http-cache"), 10L * 1024L * 1024L))
-            .addInterceptor(apiKeyInterceptor)
-            .addNetworkInterceptor(cacheInterceptor)
-            .addInterceptor(forceCacheInterceptor)
+        .newBuilder()
+        .cache(Cache(File(appContext.cacheDir, "http-cache"), 10L * 1024L * 1024L))
+        .addInterceptor(apiKeyInterceptor)
+        .addNetworkInterceptor(cacheInterceptor)
+        .addInterceptor(forceCacheInterceptor)
         .addInterceptor(loggerInterceptor)
-            .build()
+        .build()
 
     @Provides
     @Singleton
@@ -72,7 +67,8 @@ class ApplicationModule(val application: MVVMApplication) {
 
     @Provides
     @Singleton
-    fun provideForceInterceptor(): ForceCacheInterceptor = ForceCacheInterceptor(application)
+    fun provideForceInterceptor(@ApplicationContext appContext: Context): ForceCacheInterceptor =
+        ForceCacheInterceptor(appContext)
 
 
     @Provides

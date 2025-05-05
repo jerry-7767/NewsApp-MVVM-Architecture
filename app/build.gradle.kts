@@ -2,6 +2,7 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("kotlin-kapt")
+    id("com.google.dagger.hilt.android")
 }
 
 android {
@@ -62,4 +63,7 @@ dependencies {
 
     implementation ("com.airbnb.android:lottie:6.5.2")
     implementation ("com.squareup.okhttp3:logging-interceptor:4.11.0")
+    // hilt
+    implementation("com.google.dagger:hilt-android:2.56.1")
+    kapt("com.google.dagger:hilt-android-compiler:2.56.1")
 }
