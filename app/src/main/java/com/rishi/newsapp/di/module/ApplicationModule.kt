@@ -28,7 +28,8 @@ class ApplicationModule {
 
     @NetworkApiKey
     @Provides
-    fun provideNetworkApiKey(): String = "c5a9a8f090c64af09ccb4397ffc9390f"
+    fun provideNetworkApiKey(): String = "9f6482a584804376874b848980b7a044"
+//    fun provideNetworkApiKey(): String = "c5a9a8f090c64af09ccb4397ffc9390f"
 
     @Provides
     @Singleton

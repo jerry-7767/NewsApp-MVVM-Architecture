@@ -9,7 +9,6 @@ object Constants {
     var COUNTRY = "us"
 
     val COUNTRY_LIST: List<Country> = listOf(
-        Country("Select Country", "na"),
         Country("United Arab Emirates", "ae"),
         Country("Argentina", "ar"),
         Country("Austria", "at"),

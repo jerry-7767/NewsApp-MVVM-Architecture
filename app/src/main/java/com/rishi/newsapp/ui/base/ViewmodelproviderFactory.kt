@@ -1,6 +1,5 @@
 package com.rishi.newsapp.ui.base
 
-import android.os.Parcelable.Creator
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import kotlin.reflect.KClass

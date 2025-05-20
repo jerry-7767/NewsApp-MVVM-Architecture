@@ -15,7 +15,8 @@ import javax.inject.Inject
 @HiltViewModel
 class SearchViewModel @Inject constructor(val repository: TopheadlineRepository) : ViewModel() {
 
-    private val mutable_search_news = MutableStateFlow<UiState<TopHeadlineResponse>>(UiState.Loading)
+    private val mutable_search_news =
+        MutableStateFlow<UiState<TopHeadlineResponse>>(UiState.Loading)
     val uistate_search_news: StateFlow<UiState<TopHeadlineResponse>> = mutable_search_news
 
     fun fetchNewsbysearch(query: String) {

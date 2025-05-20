@@ -2,12 +2,13 @@ package com.rishi.newsapp.data.repository
 
 import com.rishi.newsapp.data.api.Networkservice
 import com.rishi.newsapp.data.model.Country
+import com.rishi.newsapp.data.model.Language
+import com.rishi.newsapp.data.model.SourcesList
 import com.rishi.newsapp.data.model.TopHeadlineResponse
 import com.rishi.newsapp.utils.Constants
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
-import com.rishi.newsapp.data.model.SourcesList
 import javax.inject.Inject
 
 class TopheadlineRepository @Inject constructor(private val networkservice: Networkservice) {
@@ -63,6 +64,14 @@ class TopheadlineRepository @Inject constructor(private val networkservice: Netw
     fun getCountrylist(): Flow<List<Country>>{
         return flow {
             emit(Constants.COUNTRY_LIST)
+        }.map {
+            it
+        }
+    }
+
+    fun getLanguageList(): Flow<List<Language>>{
+        return flow {
+            emit(Constants.LANGUAGE_LIST)
         }.map {
             it
         }
