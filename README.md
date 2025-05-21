@@ -43,3 +43,10 @@ While building this project I have read various blogs to understand the below co
 * Pagination
 * Unit Test
 
+## 🤝 Let's Connect
+
+If you’re looking for a developer who can build scalable Android solutions with clean, maintainable code — let’s talk!
+
+📍 [LinkedIn](https://www.linkedin.com/in/rishi-marpalle/)  
+📧 Email: rishikeshmarpalle618@gmail.com
+
