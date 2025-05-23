@@ -88,6 +88,10 @@ fun Countrylist(
 
         }
 
+        is UiState.Initial -> {
+
+        }
+
         UiState.Loading -> {}
     }
 }

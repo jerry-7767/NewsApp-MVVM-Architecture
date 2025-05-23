@@ -88,8 +88,7 @@ fun HomeScreen(
 }
 
 @Composable
-fun LoadingDialog(isShowing: Boolean) {
-    if (isShowing) {
+fun LoadingDialog() {
         Dialog(onDismissRequest = { /* Do nothing to disable dismiss */ }) {
             Box(
                 modifier = Modifier
@@ -112,7 +111,6 @@ fun LoadingDialog(isShowing: Boolean) {
                         LottieAnimationLoader()
                     }
                 }
-            }
         }
     }
 }

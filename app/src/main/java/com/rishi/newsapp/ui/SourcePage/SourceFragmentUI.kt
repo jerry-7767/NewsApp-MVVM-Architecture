@@ -23,6 +23,8 @@ import androidx.navigation.NavController
 import com.rishi.newsapp.R
 import com.rishi.newsapp.data.model.SourcesList
 import com.rishi.newsapp.ui.CountryPage.CommonListItem
+import com.rishi.newsapp.ui.HomePage.Nodataview
+import com.rishi.newsapp.ui.Screens.LoadingDialog
 import com.rishi.newsapp.ui.base.UiState
 
 @Composable
@@ -65,24 +67,34 @@ fun SourceList(
     when (country_list) {
         is UiState.Success -> {
             val list = country_list.data
-            LazyColumn() {
-                items(list) { data ->
-                    CommonListItem(
-                        data.name,
-                        data.id,
-                        navController,
-                        "source",
-                        modifier = modifier
-                    )
+            if (list.isNotEmpty()) {
+                LazyColumn() {
+                    items(list) { data ->
+                        CommonListItem(
+                            data.name,
+                            data.id,
+                            navController,
+                            "source",
+                            modifier = modifier
+                        )
+                    }
                 }
+            } else {
+                Nodataview()
             }
         }
 
         is UiState.Error -> {
-
+            Nodataview()
         }
 
-        UiState.Loading -> {}
+        UiState.Loading -> {
+            LoadingDialog()
+        }
+
+        is UiState.Initial -> {
+
+        }
     }
 }
 

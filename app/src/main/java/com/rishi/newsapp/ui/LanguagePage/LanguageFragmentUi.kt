@@ -23,6 +23,7 @@ import androidx.navigation.NavController
 import com.rishi.newsapp.R
 import com.rishi.newsapp.data.model.Language
 import com.rishi.newsapp.ui.CountryPage.CommonListItem
+import com.rishi.newsapp.ui.Screens.LoadingDialog
 import com.rishi.newsapp.ui.base.UiState
 
 @Composable
@@ -81,9 +82,12 @@ fun LanguageList(
         is UiState.Error -> {
 
         }
+        is UiState.Initial -> {
+
+        }
 
         UiState.Loading -> {
-
+            LoadingDialog()
         }
     }
 }

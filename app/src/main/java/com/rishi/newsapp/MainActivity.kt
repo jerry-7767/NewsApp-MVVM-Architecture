@@ -70,26 +70,38 @@ fun BottomNavBar(navController: NavController) {
 
     BottomNavigation(backgroundColor = Color.White) {
         val currentBackStackEntry = navController.currentBackStackEntryAsState()
+        val currentRoute = currentBackStackEntry.value?.destination?.route?.substringBefore("?")
+
         items.forEach { item ->
+            val isSelected = currentRoute == item.route
+            val tintColor = if (isSelected) Color.Red else Color.Black
             BottomNavigationItem(
                 icon = {
                     Icon(
                         painter = painterResource(id = item.icon),
                         contentDescription = item.label,
+                        tint = tintColor,
                         modifier = Modifier
                             .width(36.dp)
                             .height(36.dp)
                             .padding(4.dp)
                     )
                 },
-                label = { Text(item.label, fontSize = 14.sp) },
-                selected = currentBackStackEntry.value?.destination?.route == item.route,
+                label = {
+                    Text(
+                        item.label, fontSize = 14.sp, color = tintColor
+                    )
+                },
+                selected = isSelected,
                 onClick = {
-                    navController.navigate(item.route) {
-                        popUpTo("home_fragment")
-                        launchSingleTop = true
+                    if (!isSelected) {
+                        navController.navigate(item.route) {
+                            popUpTo("home_fragment")
+                            launchSingleTop = true
+                            restoreState = true
+                        }
                     }
-                }
+                }, alwaysShowLabel = true
             )
         }
     }

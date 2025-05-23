@@ -96,7 +96,7 @@ fun SearchFragmentUI(searchviewmodel: SearchViewModel = hiltViewModel()) {
             // List or UI State
             when (val state = uiState) {
                 is UiState.Loading -> {
-//                CircularProgressIndicator(modifier = Modifier.align(Alignment.CenterHorizontally))
+//                    LoadingDialog()
                 }
 
                 is UiState.Success -> {
@@ -125,6 +125,10 @@ fun SearchFragmentUI(searchviewmodel: SearchViewModel = hiltViewModel()) {
                 is UiState.Error -> {
                     /* val msg = (uiState as UiState.Error).message
                 Text("Error: $msg", color = Color.Red)*/
+                }
+
+                is UiState.Initial -> {
+
                 }
             }
         }

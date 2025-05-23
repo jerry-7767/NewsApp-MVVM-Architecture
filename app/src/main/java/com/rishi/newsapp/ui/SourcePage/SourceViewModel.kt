@@ -18,10 +18,6 @@ class SourceViewModel @Inject constructor(val repository: TopheadlineRepository)
     private val mutable_source = MutableStateFlow<UiState<List<SourcesList>>>(UiState.Loading)
     val uistate_source: StateFlow<UiState<List<SourcesList>>> = mutable_source
 
-    init {
-        fetchSource()
-    }
-
     fun fetchSource() {
         viewModelScope.launch {
             repository.getSourceslits().catch {

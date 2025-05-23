@@ -29,9 +29,6 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -81,8 +78,8 @@ fun HomeFragmentUI(
         if (!sourceId.isNullOrEmpty() && sourceId != "null") {
             viewModel.fetchNewsbySources(sourceId)
         }
+        viewModel.fetchSourcelist()
     }
-    var showDialog by remember { mutableStateOf(false) }
 
     Box(modifier = Modifier.fillMaxSize()) {
         Box(
@@ -106,23 +103,21 @@ fun HomeFragmentUI(
                         val source =
                             (uiStateSource as UiState.Success<List<SourcesList>>).data.take(4)
                         SourceRow(source, viewModel, navController, modifier = Modifier)
-                        showDialog = false
                     }
 
                     is UiState.Loading -> {
-                        showDialog = true
+                        LoadingDialog()
                     }
 
                     is UiState.Error -> {
-                        showDialog = false
+                    }
+                    is UiState.Initial -> {
                     }
                 }
 
-                LoadingDialog(isShowing = showDialog)
 
                 when (val state = newsList) {
                     is UiState.Success -> {
-                        showDialog = false
                         CountTitle(state.data.totalResults.toString(), modifier = Modifier)
                         if (state.data.articles.isNotEmpty()) {
                             NestedScrollPagerandList(
@@ -135,15 +130,16 @@ fun HomeFragmentUI(
                     }
 
                     is UiState.Loading -> {
-                        showDialog = true
+                        LoadingDialog()
                     }
 
                     is UiState.Error -> {
                         Nodataview()
-                        showDialog = false
+                    }
+                    is UiState.Initial -> {
+                        Nodataview()
                     }
                 }
-//            Nodataview()
             }
         }
     }
