@@ -29,23 +29,28 @@ import androidx.navigation.compose.rememberNavController
 import com.rishi.newsapp.ui.Screens.HomeScreen
 import com.rishi.newsapp.ui.Screens.SplashScreen
 import com.rishi.newsapp.ui.theme.NewsAppTheme
+import com.rishi.newsapp.utils.NetworkHelper
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+
+    @Inject
+    lateinit var networkHelper: NetworkHelper
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             NewsAppTheme {
-                NewsAppNavHost()
+                NewsAppNavHost(networkHelper)
             }
         }
     }
 }
 
 @Composable
-fun NewsAppNavHost(
+fun NewsAppNavHost(networkHelper: NetworkHelper,
     navController: NavHostController = rememberNavController()
 ) {
     NavHost(navController = navController, startDestination = "splash") {
@@ -53,7 +58,7 @@ fun NewsAppNavHost(
             SplashScreen(navController)
         }
         composable("home") {
-            HomeScreen()
+            HomeScreen(networkHelper)
         }
     }
 }

@@ -100,5 +100,8 @@ dependencies {
     implementation ("com.google.accompanist:accompanist-pager:0.30.1")
     implementation (libs.accompanist.pager.indicators)
 
+    implementation (libs.androidx.room.runtime)
+    implementation (libs.androidx.room.ktx)
+    kapt (libs.androidx.room.compiler)
 
 }

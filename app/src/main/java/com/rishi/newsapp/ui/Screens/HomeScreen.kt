@@ -38,9 +38,11 @@ import com.rishi.newsapp.ui.SearchPage.SearchFragmentUI
 import com.rishi.newsapp.ui.SearchPage.SearchViewModel
 import com.rishi.newsapp.ui.SourcePage.SourceFragmentUI
 import com.rishi.newsapp.ui.SourcePage.SourceViewModel
+import com.rishi.newsapp.utils.NetworkHelper
 
 @Composable
 fun HomeScreen(
+    networkHelper: NetworkHelper,
     viewModel: HomeViewModel = hiltViewModel(),
     searchviewmodel: SearchViewModel = hiltViewModel(),
     countryViewModel: CountryViewModel = hiltViewModel(),
@@ -77,7 +79,7 @@ fun HomeScreen(
                 val countryId = backStackEntry.arguments?.getString("countryId")
                 val languageId = backStackEntry.arguments?.getString("languageId")
                 val sourceId = backStackEntry.arguments?.getString("sourceId")
-                HomeFragmentUI(viewModel, navController, countryId, languageId, sourceId)
+                HomeFragmentUI(networkHelper,viewModel, navController, countryId, languageId, sourceId)
             }
             composable("search_fragment") { SearchFragmentUI(searchviewmodel) }
             composable("country_fragment") { CountryFragmentUI(countryViewModel, navController) }

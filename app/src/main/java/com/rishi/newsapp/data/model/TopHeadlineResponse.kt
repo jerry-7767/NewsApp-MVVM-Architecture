@@ -10,3 +10,11 @@ data class TopHeadlineResponse(
     @SerializedName("articles")
     val articles: List<Article> = ArrayList()
 )
+/*fun TopHeadlineResponse.toTopheadlinetable(): TopHeadlineResponseTable{
+    return TopHeadlineResponseTable(
+        status = status,
+        totalResults = totalResults,
+        articles = articles.toArticleTable(),
+    )
+}*/
+

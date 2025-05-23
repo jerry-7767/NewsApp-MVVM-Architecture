@@ -29,6 +29,9 @@ retrofit2 = "2.9.0"
 lifecycle = "1.1.1"
 activityCompose = "1.10.1"
 composeBom = "2025.05.00"
+roomRuntime = "2.5.0"
+roomKtx = "2.5.0"
+roomCompiler = "2.5.0"
 
 [libraries]
 accompanist-pager-indicators = { module = "com.google.accompanist:accompanist-pager-indicators", version.ref = "accompanistPagerIndicators" }
@@ -43,6 +46,9 @@ androidx-lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-
 androidx-lifecycle-viewmodel-ktx-v287 = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecycleViewmodelKtx" }
 androidx-material = { module = "androidx.compose.material:material", version.ref = "materialVersion" }
 androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
+androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "roomCompiler" }
+androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "roomKtx" }
+androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "roomRuntime" }
 coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coilCompose" }
 dagger-v255 = { module = "com.google.dagger:dagger", version.ref = "dagger" }
 glide-v4151 = { module = "com.github.bumptech.glide:glide", version.ref = "glideVersion" }

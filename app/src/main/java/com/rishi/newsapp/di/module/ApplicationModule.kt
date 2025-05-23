@@ -1,10 +1,16 @@
 package com.rishi.newsapp.di.module
 
 import android.content.Context
+import androidx.room.Room
+import com.rishi.newsapp.data.Local.AppDatabase
+import com.rishi.newsapp.data.Local.AppDatabaseService
+import com.rishi.newsapp.data.Local.DatabaseService
 import com.rishi.newsapp.data.api.ApiKeyInterceptor
 import com.rishi.newsapp.data.api.CacheInterceptor
 import com.rishi.newsapp.data.api.ForceCacheInterceptor
 import com.rishi.newsapp.data.api.Networkservice
+import com.rishi.newsapp.utils.DefaultNetworkHelper
+import com.rishi.newsapp.utils.NetworkHelper
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -68,6 +74,12 @@ class ApplicationModule {
 
     @Provides
     @Singleton
+    fun provideNetworkHelper(@ApplicationContext context: Context): NetworkHelper{
+        return DefaultNetworkHelper(context)
+    }
+
+    @Provides
+    @Singleton
     fun provideForceInterceptor(@ApplicationContext appContext: Context): ForceCacheInterceptor =
         ForceCacheInterceptor(appContext)
 
@@ -85,6 +97,29 @@ class ApplicationModule {
             .addConverterFactory(gsonConverterFactory)
             .build()
             .create(Networkservice::class.java)
+    }
+
+    @DatabaseName
+    @Provides
+    fun provideDatabaseName(): String = "news-database"
+
+    @Provides
+    @Singleton
+    fun provideAppDatabase(
+        @ApplicationContext context: Context,
+        @DatabaseName databaseName: String
+    ): AppDatabase {
+        return Room.databaseBuilder(
+            context,
+            AppDatabase::class.java,
+            databaseName
+        ).build()
+    }
+
+    @Provides
+    @Singleton
+    fun provideDatabaseService(appDatabase: AppDatabase): DatabaseService {
+        return AppDatabaseService(appDatabase)
     }
 
 }

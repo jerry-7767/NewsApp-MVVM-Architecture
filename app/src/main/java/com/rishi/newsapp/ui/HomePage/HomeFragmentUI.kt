@@ -50,15 +50,17 @@ import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.rishi.newsapp.R
-import com.rishi.newsapp.data.model.Article
-import com.rishi.newsapp.data.model.SourcesList
+import com.rishi.newsapp.data.Local.entity.ArticleTable
+import com.rishi.newsapp.data.Local.entity.SourceListTable
 import com.rishi.newsapp.openCustomChromeTab
 import com.rishi.newsapp.ui.Screens.LoadingDialog
 import com.rishi.newsapp.ui.base.UiState
+import com.rishi.newsapp.utils.NetworkHelper
 import kotlinx.coroutines.delay
 
 @Composable
 fun HomeFragmentUI(
+    networkHelper: NetworkHelper,
     viewModel: HomeViewModel = hiltViewModel(),
     navController: NavController,
     countryId: String?,
@@ -78,7 +80,21 @@ fun HomeFragmentUI(
         if (!sourceId.isNullOrEmpty() && sourceId != "null") {
             viewModel.fetchNewsbySources(sourceId)
         }
-        viewModel.fetchSourcelist()
+    }
+
+    LaunchedEffect(Unit) {
+        if (networkHelper.isNetworkConnected()) {
+            if ((countryId.isNullOrEmpty() || countryId == "null")
+                && (languageId.isNullOrEmpty() || languageId == "null")
+                && (sourceId.isNullOrEmpty() || sourceId == "null")
+            ) {
+                viewModel.fetchSourcelist()
+                viewModel.fetchNewsOffline()
+            }
+        } else {
+            viewModel.fetchSourcelistFromDB()
+            viewModel.fetchNewsFromDB()
+        }
     }
 
     Box(modifier = Modifier.fillMaxSize()) {
@@ -101,7 +117,7 @@ fun HomeFragmentUI(
                 when (uiStateSource) {
                     is UiState.Success -> {
                         val source =
-                            (uiStateSource as UiState.Success<List<SourcesList>>).data.take(4)
+                            (uiStateSource as UiState.Success<List<SourceListTable>>).data.take(4)
                         SourceRow(source, viewModel, navController, modifier = Modifier)
                     }
 
@@ -111,6 +127,7 @@ fun HomeFragmentUI(
 
                     is UiState.Error -> {
                     }
+
                     is UiState.Initial -> {
                     }
                 }
@@ -118,10 +135,10 @@ fun HomeFragmentUI(
 
                 when (val state = newsList) {
                     is UiState.Success -> {
-                        CountTitle(state.data.totalResults.toString(), modifier = Modifier)
-                        if (state.data.articles.isNotEmpty()) {
+                        CountTitle(state.data.size.toString(), modifier = Modifier)
+                        if (state.data.isNotEmpty()) {
                             NestedScrollPagerandList(
-                                state.data.articles,
+                                state.data,
                                 modifier = Modifier
                             )
                         } else {
@@ -136,6 +153,7 @@ fun HomeFragmentUI(
                     is UiState.Error -> {
                         Nodataview()
                     }
+
                     is UiState.Initial -> {
                         Nodataview()
                     }
@@ -166,7 +184,7 @@ fun CountTitle(count: String, modifier: Modifier = Modifier) {
 
 @Composable
 fun SourceRow(
-    sourcestate: List<SourcesList>,
+    sourcestate: List<SourceListTable>,
     viewModel: HomeViewModel = hiltViewModel(),
     navController: NavController,
     modifier: Modifier.Companion
@@ -176,14 +194,16 @@ fun SourceRow(
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         sourcestate.forEach { sourcedata ->
-            SourceItem(
-                imageRes = R.drawable.source_logo,
-                text = sourcedata.name,
-                id = sourcedata.id,
-                viewModel,
-                navController,
-                modifier = Modifier.weight(1f)
-            )
+            sourcedata.source_id?.let {
+                SourceItem(
+                    imageRes = R.drawable.source_logo,
+                    text = sourcedata.name,
+                    id = it,
+                    viewModel,
+                    navController,
+                    modifier = Modifier.weight(1f)
+                )
+            }
         }
         SourceItem(
             imageRes = R.drawable.icon_other,
@@ -264,7 +284,7 @@ fun Nodataview(modifier: Modifier = Modifier) {
 
 @Composable
 fun NewsViewPager(
-    articlelist: List<Article>,
+    articlelist: List<ArticleTable>,
     modifier: Modifier = Modifier
 ) {
     val pagerState =
@@ -305,7 +325,7 @@ fun NewsViewPager(
 }
 
 @Composable
-fun NewsViewPagerCardItem(article: Article, modifier: Modifier) {
+fun NewsViewPagerCardItem(article: ArticleTable, modifier: Modifier) {
     val context = LocalContext.current
     Card(
         modifier = modifier
@@ -343,14 +363,16 @@ fun NewsViewPagerCardItem(article: Article, modifier: Modifier) {
                     .align(Alignment.BottomStart)
                     .padding(start = 20.dp, end = 10.dp, top = 12.dp, bottom = 10.dp)
             ) {
-                Text(
-                    text = article.description,
-                    color = Color.White,
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.Bold,
-                    maxLines = 2,
-                    overflow = TextOverflow.Ellipsis
-                )
+                article.description?.let {
+                    Text(
+                        text = it,
+                        color = Color.White,
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.Bold,
+                        maxLines = 2,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                }
 
                 Spacer(modifier = Modifier.height(16.dp))
 
@@ -380,7 +402,7 @@ fun NewsViewPagerCardItem(article: Article, modifier: Modifier) {
 
 @Composable
 fun NestedScrollPagerandList(
-    articlelist: List<Article>,
+    articlelist: List<ArticleTable>,
     modifier: Modifier = Modifier
 ) {
     LazyColumn() {

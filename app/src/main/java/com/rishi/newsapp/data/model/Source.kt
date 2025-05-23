@@ -1,6 +1,7 @@
 package com.rishi.newsapp.data.model
 
 import com.google.gson.annotations.SerializedName
+import com.rishi.newsapp.data.Local.entity.SourceTable
 
 data class Source(
     @SerializedName("id")
@@ -8,3 +9,6 @@ data class Source(
     @SerializedName("name")
     val name: String = "",
 )
+fun Source.toSourceTable(): SourceTable {
+    return SourceTable(id, name)
+}

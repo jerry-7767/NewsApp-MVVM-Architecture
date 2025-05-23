@@ -1,7 +1,7 @@
 package com.rishi.newsapp.data.model
 
 import com.google.gson.annotations.SerializedName
-import com.rishi.newsapp.data.model.Source
+import com.rishi.newsapp.data.Local.entity.ArticleTable
 
 data class Article(
     @SerializedName("title")
@@ -15,3 +15,17 @@ data class Article(
     @SerializedName("source")
     val source: Source
 )
+
+fun Article.toArticleTable(): ArticleTable {
+    return ArticleTable(
+        title = title,
+        description = description,
+        url = url,
+        imageUrl = imageUrl,
+        source = source.toSourceTable(),
+    )
+}
+
+fun List<Article>.toArticleTable(): List<ArticleTable> {
+    return this.map { it.toArticleTable() }
+}

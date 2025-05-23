@@ -100,7 +100,7 @@ fun SearchFragmentUI(searchviewmodel: SearchViewModel = hiltViewModel()) {
                 }
 
                 is UiState.Success -> {
-                    val articles = state.data.articles
+                    val articles = state.data
 
                     if (articles.isEmpty()) {
                         Text(

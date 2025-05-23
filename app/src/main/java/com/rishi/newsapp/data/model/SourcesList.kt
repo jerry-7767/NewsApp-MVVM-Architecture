@@ -1,6 +1,7 @@
 package com.rishi.newsapp.data.model
 
 import com.google.gson.annotations.SerializedName
+import com.rishi.newsapp.data.Local.entity.SourceListTable
 
 data class SourcesList(
     @SerializedName("id")
@@ -19,3 +20,13 @@ data class SourcesList(
     val country: String = ""
 
 )
+
+fun SourcesList.toSourcelistTable(): SourceListTable {
+    return SourceListTable(
+        source_id = id,
+        name = name,
+        url = url,
+        language = language,
+        country = country
+    )
+}

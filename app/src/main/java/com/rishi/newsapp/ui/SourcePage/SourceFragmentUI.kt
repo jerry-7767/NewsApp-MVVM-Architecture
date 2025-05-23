@@ -1,5 +1,6 @@
 package com.rishi.newsapp.ui.SourcePage
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -21,7 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.rishi.newsapp.R
-import com.rishi.newsapp.data.model.SourcesList
+import com.rishi.newsapp.data.Local.entity.SourceListTable
 import com.rishi.newsapp.ui.CountryPage.CommonListItem
 import com.rishi.newsapp.ui.HomePage.Nodataview
 import com.rishi.newsapp.ui.Screens.LoadingDialog
@@ -33,7 +34,6 @@ fun SourceFragmentUI(
     navController: NavController
 ) {
     val source_list by sourceViewModel.uistate_source.collectAsState()
-    sourceViewModel.fetchSource()
     Box(modifier = Modifier.fillMaxSize()) {
         Box(
             modifier = Modifier
@@ -60,7 +60,7 @@ fun SourceFragmentUI(
 
 @Composable
 fun SourceList(
-    country_list: UiState<List<SourcesList>>,
+    country_list: UiState<List<SourceListTable>>,
     navController: NavController,
     modifier: Modifier = Modifier
 ) {
@@ -70,13 +70,15 @@ fun SourceList(
             if (list.isNotEmpty()) {
                 LazyColumn() {
                     items(list) { data ->
-                        CommonListItem(
-                            data.name,
-                            data.id,
-                            navController,
-                            "source",
-                            modifier = modifier
-                        )
+                        data.source_id?.let {
+                            CommonListItem(
+                                data.name,
+                                it,
+                                navController,
+                                "source",
+                                modifier = modifier
+                            )
+                        }
                     }
                 }
             } else {
@@ -85,6 +87,7 @@ fun SourceList(
         }
 
         is UiState.Error -> {
+            Log.e("cawefewa",(country_list as UiState.Error).message)
             Nodataview()
         }
 
