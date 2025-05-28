@@ -2,14 +2,14 @@
 # NewsApp-MVVM-Architecture
 
 News Bytes is a news application developed as a learning project to explore modern Android development
-practices. Built using Dagger2, Hilt, MVVM Clean Architecture, and Jetpack Compose, the app fetches and
+practices. Built using Dagger2, Hilt, MVVM Architecture, and Jetpack Compose, the app fetches and
 displays the latest news articles in a user-friendly interface.
 
 
 ## ✨ Features
 
 - 🧭 Clean, intuitive UI with **Jetpack Compose**
-- 🧱 Modular **MVVM Clean Architecture**
+- 🧱 Modular **MVVM Architecture**
 - 🗂 Dependency injection using **Dagger2** and **Hilt**
 - 🌐 Fetches real-time news using REST APIs
 - 🧪 Testable, scalable, and maintainable codebase
